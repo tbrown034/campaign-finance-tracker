@@ -1,5 +1,4 @@
 "use client";
-"use strict";
 import React, { useState } from "react";
 import {
   searchCandidates,
@@ -37,14 +36,17 @@ export default function Home() {
 
       try {
         const candidateDetails = await getCandidateDetails(candidateId);
+        console.log("Candidate Details:", candidateDetails);
         const fundraisingDetails = await getCandidateFundraisingTotal(
           candidateId
         );
+        console.log("Fundraising Details:", fundraisingDetails);
 
         setSelectedCandidate(candidateDetails);
         setFundraisingTotal(fundraisingDetails);
       } catch (error) {
         setError("Failed to fetch candidate details or fundraising total data");
+        console.error(error);
       } finally {
         setIsLoading(false);
       }
@@ -79,7 +81,7 @@ export default function Home() {
         />
         <button
           type="submit"
-          className="w-1/2 px-4 py-2 font-semibold text-white bg-gradient-to-r from-red-600 to-blue-600 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-blue-700 active:bg-blue-800"
+          className="w-1/2 px-4 py-2 font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl "
         >
           Search
         </button>
@@ -88,31 +90,54 @@ export default function Home() {
       {error && <p className="text-red-500">{error}</p>}
       {!isLoading && !error && (
         <>
-          {candidates.map((candidate, index) => (
+          {candidates.map((candidate) => (
             <div
-              key={index}
-              onClick={() => handleSelectCandidate(candidate.id)}
-              className="p-4 rounded-lg cursor-pointer hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
-              style={{
-                backgroundColor: candidate.party === "REP" ? "red" : "blue",
-              }}
+              key={candidate.candidate_id}
+              className="flex flex-col items-center"
             >
-              <h2>{candidate.name.split(",").reverse().join(" ").trim()}</h2>
-              <p>{candidate.party}</p>
+              <button
+                onClick={() => handleSelectCandidate(candidate.candidate_id)}
+                className={`p-4 rounded-lg w-3/4 cursor-pointer ${
+                  candidate.party === "DEM"
+                    ? "bg-blue-500 hover:bg-blue-600"
+                    : "bg-red-500 hover:bg-red-600"
+                }`}
+              >
+                <h2>{candidate.name.split(",").reverse().join(" ").trim()}</h2>
+                <p>({candidate.party})</p>
+                <p>{candidate.candidate_id}</p>
+              </button>
             </div>
           ))}
+
           {selectedCandidate && (
-            <h2 className="mt-4 text-2xl font-semibold">
-              {selectedCandidate.name.split(",").reverse().join(" ").trim()}
-            </h2>
+            <div>
+              <h2 className="mt-4 text-2xl font-semibold">
+                {selectedCandidate.name.split(",").reverse().join(" ").trim()}
+              </h2>
+              <div className="flex gap-2">
+                <p>{selectedCandidate.state}</p>
+                <p> {selectedCandidate.office_full}</p>
+                <p>District {selectedCandidate.district_number}</p>
+              </div>
+            </div>
           )}
           {fundraisingTotal && (
-            <p className="mt-2">{JSON.stringify(fundraisingTotal)}</p>
+            <div className="flex flex-col gap-2">
+              <p>
+                Total Raised: {JSON.stringify(fundraisingTotal.contributions)}
+              </p>
+              <p>Total Spent: {JSON.stringify(fundraisingTotal.receipts)}</p>
+              <p>
+                Year of Last Report:{" "}
+                {JSON.stringify(fundraisingTotal.last_report_year)}
+              </p>
+            </div>
           )}
           <div className="flex justify-center mt-4">
             <button
               onClick={handleReset}
-              className="w-1/2 px-4 py-2 font-semibold text-white bg-gradient-to-r from-blue-600 to-red-600 rounded-xl hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:bg-red-700 active:bg-red-800"
+              className="w-1/2 px-4 py-2 font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl"
             >
               Reset
             </button>
