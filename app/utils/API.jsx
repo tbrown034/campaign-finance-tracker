@@ -1,17 +1,40 @@
-export async function getData(state, year) {
-  const API_Key = process.env.NEXT_PUBLIC_FEC_API_KEY;
+// utils/API.jsx
 
-  const url = `https://api.open.fec.gov/v1/candidates/search/?sort_hide_null=true&page=1&state=${state}&election_year=${year}&api_key=${API_Key}&sort=name&per_page=20&sort_null_only=false&sort_nulls_last=false`;
+export async function searchCandidates(name) {
+  const API_Key = process.env.NEXT_PUBLIC_FEC_API_KEY;
+  const url = `https://api.open.fec.gov/v1/candidates/search/?name=${name}&api_key=${API_Key}`;
 
   const res = await fetch(url);
-
-  // Recommendation: handle errors
   if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+    throw new Error("Failed to fetch search candidate data");
   }
   const data = await res.json();
-  console.log("the data", data);
 
-  return data;
+  return data.results;
+}
+
+export async function getCandidateDetails(candidateId) {
+  const API_Key = process.env.NEXT_PUBLIC_FEC_API_KEY;
+  const url = `https://api.open.fec.gov/v1/candidate/${candidateId}/?api_key=${API_Key}`;
+
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error("Failed to fetch getcandidatdetails data");
+  }
+  const data = await res.json();
+
+  return data.results[0];
+}
+
+export async function getCandidateFundraisingTotal(candidateId) {
+  const API_Key = process.env.NEXT_PUBLIC_FEC_API_KEY;
+  const url = `https://api.open.fec.gov/v1/candidate/${candidateId}/totals/?api_key=${API_Key}`;
+
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error("Failed to fetch fundraising total data");
+  }
+  const data = await res.json();
+
+  return data.results[0];
 }
