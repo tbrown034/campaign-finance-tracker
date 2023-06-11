@@ -6,6 +6,24 @@ import {
   getCandidateFundraisingTotal,
 } from "./utils/API.jsx";
 
+const getFullPartyName = (party) => {
+  switch (party) {
+    case "REP":
+      return "Republican";
+    case "DEM":
+      return "Democrat";
+    default:
+      return party;
+  }
+};
+
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(amount);
+};
+
 export default function Home() {
   const [candidates, setCandidates] = useState([]);
   const [candidateName, setCandidateName] = useState("");
@@ -104,8 +122,8 @@ export default function Home() {
                 }`}
               >
                 <h2>{candidate.name.split(",").reverse().join(" ").trim()}</h2>
-                <p>({candidate.party})</p>
-                <p>{candidate.candidate_id}</p>
+                <p>{getFullPartyName(candidate.party)}</p>
+                <p>{candidate.state}</p>
               </button>
             </div>
           ))}
@@ -115,6 +133,7 @@ export default function Home() {
               <h2 className="mt-4 text-2xl font-semibold">
                 {selectedCandidate.name.split(",").reverse().join(" ").trim()}
               </h2>
+              <p>{selectedCandidate.party}</p>
               <div className="flex gap-2">
                 <p>{selectedCandidate.state}</p>
                 <p> {selectedCandidate.office_full}</p>
@@ -125,23 +144,16 @@ export default function Home() {
           {fundraisingTotal && (
             <div className="flex flex-col gap-2">
               <p>
-                Total Raised: {JSON.stringify(fundraisingTotal.contributions)}
+                Total Raised: {formatCurrency(fundraisingTotal.contributions)}
               </p>
-              <p>Total Spent: {JSON.stringify(fundraisingTotal.receipts)}</p>
+              <p>Total Spent: {formatCurrency(fundraisingTotal.receipts)}</p>
               <p>
-                Year of Last Report:{" "}
-                {JSON.stringify(fundraisingTotal.last_report_year)}
+                Cash on Hand:{" "}
+                {formatCurrency(fundraisingTotal.last_cash_on_hand_end_period)}
               </p>
+              <p>Year of Last Report: {fundraisingTotal.last_report_year}</p>
             </div>
           )}
-          <div className="flex justify-center mt-4">
-            <button
-              onClick={handleReset}
-              className="w-1/2 px-4 py-2 font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl"
-            >
-              Reset
-            </button>
-          </div>
         </>
       )}
     </main>
