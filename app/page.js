@@ -24,6 +24,63 @@ const formatCurrency = (amount) => {
   }).format(amount);
 };
 
+const stateNames = {
+  AK: "Alaska",
+  AL: "Alabama",
+  AR: "Arkansas",
+  AZ: "Arizona",
+  CA: "California",
+  CO: "Colorado",
+  CT: "Connecticut",
+  DE: "Delaware",
+  FL: "Florida",
+  GA: "Georgia",
+  HI: "Hawaii",
+  IA: "Iowa",
+  ID: "Idaho",
+  IL: "Illinois",
+  IN: "Indiana",
+  KS: "Kansas",
+  KY: "Kentucky",
+  LA: "Louisiana",
+  MA: "Massachusetts",
+  MD: "Maryland",
+  ME: "Maine",
+  MI: "Michigan",
+  MN: "Minnesota",
+  MO: "Missouri",
+  MS: "Mississippi",
+  MT: "Montana",
+  NC: "North Carolina",
+  ND: "North Dakota",
+  NE: "Nebraska",
+  NH: "New Hampshire",
+  NJ: "New Jersey",
+  NM: "New Mexico",
+  NV: "Nevada",
+  NY: "New York",
+  OH: "Ohio",
+  OK: "Oklahoma",
+  OR: "Oregon",
+  PA: "Pennsylvania",
+  RI: "Rhode Island",
+  SC: "South Carolina",
+  SD: "South Dakota",
+  TN: "Tennessee",
+  TX: "Texas",
+  UT: "Utah",
+  VA: "Virginia",
+  VT: "Vermont",
+  WA: "Washington",
+  WI: "Wisconsin",
+  WV: "West Virginia",
+  WY: "Wyoming",
+};
+
+const getStateName = (stateAbbreviation) => {
+  return stateNames[stateAbbreviation] || stateAbbreviation;
+};
+
 export default function Home() {
   const [candidates, setCandidates] = useState([]);
   const [candidateName, setCandidateName] = useState("");
@@ -123,7 +180,7 @@ export default function Home() {
               >
                 <h2>{candidate.name.split(",").reverse().join(" ").trim()}</h2>
                 <p>{getFullPartyName(candidate.party)}</p>
-                <p>{candidate.state}</p>
+                <p>{getStateName(candidate.state)}</p>
               </button>
             </div>
           ))}
@@ -133,9 +190,9 @@ export default function Home() {
               <h2 className="mt-4 text-2xl font-semibold">
                 {selectedCandidate.name.split(",").reverse().join(" ").trim()}
               </h2>
-              <p>{selectedCandidate.party}</p>
+              <p>{getFullPartyName(selectedCandidate.party)}</p>
               <div className="flex gap-2">
-                <p>{selectedCandidate.state}</p>
+                <p>{getStateName(selectedCandidate.state)}</p>
                 <p> {selectedCandidate.office_full}</p>
                 <p>District {selectedCandidate.district_number}</p>
               </div>
