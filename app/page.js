@@ -5,81 +5,8 @@ import {
   getCandidateDetails,
   getCandidateFundraisingTotal,
 } from "./utils/API.jsx";
-
-const getFullPartyName = (party) => {
-  switch (party) {
-    case "REP":
-      return "Republican";
-    case "DEM":
-      return "Democrat";
-    default:
-      return party;
-  }
-};
-
-const formatCurrency = (amount) => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(amount);
-};
-
-const stateNames = {
-  AK: "Alaska",
-  AL: "Alabama",
-  AR: "Arkansas",
-  AZ: "Arizona",
-  CA: "California",
-  CO: "Colorado",
-  CT: "Connecticut",
-  DE: "Delaware",
-  FL: "Florida",
-  GA: "Georgia",
-  HI: "Hawaii",
-  IA: "Iowa",
-  ID: "Idaho",
-  IL: "Illinois",
-  IN: "Indiana",
-  KS: "Kansas",
-  KY: "Kentucky",
-  LA: "Louisiana",
-  MA: "Massachusetts",
-  MD: "Maryland",
-  ME: "Maine",
-  MI: "Michigan",
-  MN: "Minnesota",
-  MO: "Missouri",
-  MS: "Mississippi",
-  MT: "Montana",
-  NC: "North Carolina",
-  ND: "North Dakota",
-  NE: "Nebraska",
-  NH: "New Hampshire",
-  NJ: "New Jersey",
-  NM: "New Mexico",
-  NV: "Nevada",
-  NY: "New York",
-  OH: "Ohio",
-  OK: "Oklahoma",
-  OR: "Oregon",
-  PA: "Pennsylvania",
-  RI: "Rhode Island",
-  SC: "South Carolina",
-  SD: "South Dakota",
-  TN: "Tennessee",
-  TX: "Texas",
-  UT: "Utah",
-  VA: "Virginia",
-  VT: "Vermont",
-  WA: "Washington",
-  WI: "Wisconsin",
-  WV: "West Virginia",
-  WY: "Wyoming",
-};
-
-const getStateName = (stateAbbreviation) => {
-  return stateNames[stateAbbreviation] || stateAbbreviation;
-};
+import CandidateInfo from "./components/candidateInfo.jsx";
+import CandidateSelect from "./components/candidateSelect.jsx";
 
 export default function Home() {
   const [candidates, setCandidates] = useState([]);
@@ -165,51 +92,18 @@ export default function Home() {
       {error && <p className="text-red-500">{error}</p>}
       {!isLoading && !error && (
         <>
-          {candidates.map((candidate) => (
-            <div
-              key={candidate.candidate_id}
-              className="flex flex-col items-center"
-            >
-              <button
-                onClick={() => handleSelectCandidate(candidate.candidate_id)}
-                className={`p-4 rounded-lg w-3/4 cursor-pointer ${
-                  candidate.party === "DEM"
-                    ? "bg-blue-500 hover:bg-blue-600"
-                    : "bg-red-500 hover:bg-red-600"
-                }`}
-              >
-                <h2>{candidate.name.split(",").reverse().join(" ").trim()}</h2>
-                <p>{getFullPartyName(candidate.party)}</p>
-                <p>{getStateName(candidate.state)}</p>
-              </button>
-            </div>
-          ))}
-
+          {!selectedCandidate &&
+            candidates.map((candidate) => (
+              <CandidateSelect
+                candidate={candidate}
+                onSelect={handleSelectCandidate}
+              />
+            ))}
           {selectedCandidate && (
-            <div>
-              <h2 className="mt-4 text-2xl font-semibold">
-                {selectedCandidate.name.split(",").reverse().join(" ").trim()}
-              </h2>
-              <p>{getFullPartyName(selectedCandidate.party)}</p>
-              <div className="flex gap-2">
-                <p>{getStateName(selectedCandidate.state)}</p>
-                <p> {selectedCandidate.office_full}</p>
-                <p>District {selectedCandidate.district_number}</p>
-              </div>
-            </div>
-          )}
-          {fundraisingTotal && (
-            <div className="flex flex-col gap-2">
-              <p>
-                Total Raised: {formatCurrency(fundraisingTotal.contributions)}
-              </p>
-              <p>Total Spent: {formatCurrency(fundraisingTotal.receipts)}</p>
-              <p>
-                Cash on Hand:{" "}
-                {formatCurrency(fundraisingTotal.last_cash_on_hand_end_period)}
-              </p>
-              <p>Year of Last Report: {fundraisingTotal.last_report_year}</p>
-            </div>
+            <CandidateInfo
+              candidate={selectedCandidate}
+              fundraising={fundraisingTotal}
+            />
           )}
         </>
       )}
