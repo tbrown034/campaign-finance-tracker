@@ -97,6 +97,7 @@ export default function Home() {
           {!selectedCandidate &&
             candidates.map((candidate) => (
               <CandidateSelect
+                key={candidate.candidate_id}
                 candidate={candidate}
                 onSelect={handleSelectCandidate}
               />

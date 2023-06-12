@@ -2,7 +2,7 @@ import React from "react";
 import { partyName, stateFullName } from "../utils/helpers";
 export default function CandidateSelect({ candidate, onSelect }) {
   return (
-    <div key={candidate.candidate_id} className="flex flex-col items-center">
+    <div className="flex flex-col items-center">
       <button
         onClick={() => onSelect(candidate.candidate_id)}
         className={`p-4 rounded-lg w-3/4 cursor-pointer ${
