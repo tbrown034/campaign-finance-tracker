@@ -11,8 +11,11 @@ export default function CandidateSelect({ candidate, onSelect }) {
             : "bg-red-500 hover:bg-red-600"
         }`}
       >
-        <h2>{candidate.name.split(",").reverse().join(" ").trim()}</h2>
-        <p>({partyName(candidate.party)})</p>
+        <h2 className="text-lg">
+          {candidate.name.split(",").reverse().join(" ").trim()}
+        </h2>
+        <p>{partyName(candidate.party)}</p>
+        <p>U.S. {candidate.office_full}</p>
         <p>{stateFullName(candidate.state)}</p>
       </button>
     </div>
