@@ -70,24 +70,26 @@ export default function Home() {
           Campaign finance tracking made easy by visualizing money in politics
         </h3>
       </div>
-      <form
-        className="flex flex-col items-center gap-4"
-        onSubmit={handleSearch}
-      >
-        <input
-          type="text"
-          value={candidateName}
-          onChange={(e) => setCandidateName(e.target.value)}
-          placeholder="Enter candidate name"
-          className="w-1/2 p-2 text-black rounded-lg focus:outline-none"
-        />
-        <button
-          type="submit"
-          className="w-1/2 px-4 py-2 font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl "
+      {selectedCandidate === null && (
+        <form
+          className="flex flex-col items-center gap-4"
+          onSubmit={handleSearch}
         >
-          Search
-        </button>
-      </form>
+          <input
+            type="text"
+            value={candidateName}
+            onChange={(e) => setCandidateName(e.target.value)}
+            placeholder="Enter candidate name"
+            className="w-1/2 p-2 text-black rounded-lg focus:outline-none"
+          />
+          <button
+            type="submit"
+            className="w-1/2 px-4 py-2 font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl "
+          >
+            Search
+          </button>
+        </form>
+      )}
       {isLoading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
       {!isLoading && !error && (
@@ -106,6 +108,16 @@ export default function Home() {
             />
           )}
         </>
+      )}
+      {(candidates.length > 0 || selectedCandidate) && (
+        <div className="flex justify-center">
+          <button
+            onClick={handleReset}
+            className="w-1/2 px-4 py-2 font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl "
+          >
+            Reset
+          </button>
+        </div>
       )}
     </main>
   );

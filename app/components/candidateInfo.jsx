@@ -3,15 +3,17 @@ import { partyName, stateFullName, formatCurrency } from "../utils/helpers";
 
 export default function CandidateInfo({ candidate, fundraising }) {
   return (
-    <div>
-      <h2 className="mt-4 text-2xl font-semibold">
-        {candidate.name.split(",").reverse().join(" ").trim()}
-      </h2>
-      <p>{partyName(candidate.party)}</p>
-      <div className="flex gap-2">
-        <p>{stateFullName(candidate.state)}</p>
-        <p> {candidate.office_full}</p>
-        <p>District {candidate.district_number}</p>
+    <div className="flex flex-col items-center">
+      <div>
+        <h2 className="mt-4 text-2xl font-semibold">
+          {candidate.name.split(",").reverse().join(" ").trim()}
+        </h2>
+        <p>{partyName(candidate.party)}</p>
+        <div className="flex gap-2">
+          <p>{stateFullName(candidate.state)}</p>
+          <p> {candidate.office_full}</p>
+          <p>District {candidate.district_number}</p>
+        </div>
       </div>
       {fundraising && (
         <div className="flex flex-col gap-2">
