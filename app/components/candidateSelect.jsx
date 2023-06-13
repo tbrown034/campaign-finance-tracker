@@ -1,4 +1,7 @@
+// CandidateSelect.jsx
+
 import React from "react";
+
 import { partyName, stateFullName } from "../utils/helpers";
 export default function CandidateSelect({ candidate, onSelect }) {
   return (

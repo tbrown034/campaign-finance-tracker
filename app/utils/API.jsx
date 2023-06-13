@@ -28,7 +28,7 @@ export async function getCandidateDetails(candidateId) {
 
 export async function getCandidateFundraisingTotal(candidateId) {
   const API_Key = process.env.NEXT_PUBLIC_FEC_API_KEY;
-  const url = `https://api.open.fec.gov/v1/candidate/${candidateId}/totals/?api_key=${API_Key}`;
+  const url = `https://api.open.fec.gov/v1/candidate/${candidateId}/totals/?sort=-cycle&sort_null_only=true&sort_nulls_last=true&sort_hide_null=true&api_key=${API_Key}`;
 
   const res = await fetch(url);
   if (!res.ok) {
@@ -36,5 +36,5 @@ export async function getCandidateFundraisingTotal(candidateId) {
   }
   const data = await res.json();
 
-  return data.results[0];
+  return data.results;
 }

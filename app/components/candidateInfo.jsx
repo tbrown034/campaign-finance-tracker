@@ -40,19 +40,15 @@ export default function CandidateInfo({ candidate, fundraising }) {
           </p>
         </div>
       </div>
-      {fundraising && (
-        <div className="flex flex-col gap-2">
-          <p>Total Raised: {formatCurrency(fundraising.contributions)}</p>
-          <p>Total Spent: {formatCurrency(fundraising.receipts)}</p>
-          <p>
-            Cash on Hand:{" "}
-            {formatCurrency(fundraising.last_cash_on_hand_end_period)}
-          </p>
-          <p>
-            Year of Last Report: {JSON.stringify(fundraising.last_report_year)}
-          </p>
-        </div>
-      )}
+      <div>
+        {fundraising &&
+          fundraising.map((fund, index) => (
+            <p key={index}>
+              Total raised for the {fund.cycle} election cycle :{" "}
+              {formatCurrency(fund.receipts)}
+            </p>
+          ))}
+      </div>
     </div>
   );
 }
