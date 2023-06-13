@@ -8,7 +8,7 @@ export default function CandidateSelect({ candidate, onSelect }) {
     <div className="flex flex-col items-center">
       <button
         onClick={() => onSelect(candidate.candidate_id)}
-        className={`p-4 rounded-lg w-3/4 cursor-pointer ${
+        className={`p-3 rounded-lg w-3/4 cursor-pointer ${
           candidate.party === "DEM"
             ? "bg-blue-500 hover:bg-blue-600"
             : "bg-red-500 hover:bg-red-600"

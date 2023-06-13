@@ -83,13 +83,13 @@ export default function CandidateInfo({ candidate, fundraising }) {
   }, [fundraising]);
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="flex flex-col gap-2">
-        <h2 className="mt-4 text-2xl font-semibold">
+    <div className="flex flex-col items-center justify-center gap-4 px-4 sm:px-0">
+      <div className="flex flex-col w-full gap-2">
+        <h2 className="mt-4 text-2xl font-semibold text-center sm:text-left">
           {candidate.name.split(",").reverse().join(" ").trim()}
         </h2>
         <div>
-          <p>
+          <p className="text-center sm:text-left">
             {finalName}{" "}
             {candidate.candidate_status === "C" ? "is running" : "ran"} as a
             member of the {partyName(candidate.party)} Party for{" "}
@@ -99,10 +99,10 @@ export default function CandidateInfo({ candidate, fundraising }) {
           </p>
         </div>
       </div>
-      <div>
+      <div className="w-full">
         {fundraising &&
           fundraising.map((fund, index) => (
-            <div key={index}>
+            <div key={index} className="text-center sm:text-left">
               <li>
                 Total raised for the {fund.cycle} election cycle :{" "}
                 {formatCurrency(fund.receipts)}
@@ -116,7 +116,7 @@ export default function CandidateInfo({ candidate, fundraising }) {
           </span>
         </h2>
       </div>
-      <div className="w-[800px] h-[600px]">
+      <div className="w-full sm:px-20 ">
         <canvas ref={chartRef} />
       </div>
     </div>

@@ -1,6 +1,6 @@
 // root page
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   searchCandidates,
   getCandidateDetails,
@@ -64,10 +64,12 @@ export default function Home() {
   };
 
   return (
-    <main className="flex flex-col justify-center min-h-screen gap-8 px-4 bg-gradient-to-t from-red-800 to-blue-800 text-cyan-100">
+    <main className="flex flex-col justify-center min-h-screen gap-8 px-6 sm:px-20 bg-gradient-to-t from-red-800 to-blue-800 text-cyan-100">
       <div className="text-center">
-        <h1 className="text-4xl">PolitiChart</h1>
-        <h3>
+        <h1 className="text-4xl font-bold tracking-wider sm:text-6xl">
+          PolitiChart
+        </h1>
+        <h3 className=" tex">
           Campaign finance tracking made easy by visualizing money in politics
         </h3>
       </div>
@@ -81,7 +83,7 @@ export default function Home() {
             value={candidateName}
             onChange={(e) => setCandidateName(e.target.value)}
             placeholder="Enter candidate name"
-            className="w-1/2 p-2 text-black rounded-lg focus:outline-none"
+            className="w-1/2 p-2 text-sm text-black rounded-lg focus:outline-none sm:text-md"
           />
           <button
             type="submit"
