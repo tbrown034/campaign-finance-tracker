@@ -23,6 +23,12 @@ export default function CandidateInfo({ candidate, fundraising }) {
     (electionYears.length ? electionYears.join(", ") + " and " : "") +
     lastYearCheck;
 
+  // Calculate total lifetime raised
+  let totalLifetimeRaised = fundraising.reduce(
+    (total, fund) => total + fund.receipts,
+    0
+  );
+
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="flex flex-col gap-2">
@@ -43,11 +49,19 @@ export default function CandidateInfo({ candidate, fundraising }) {
       <div>
         {fundraising &&
           fundraising.map((fund, index) => (
-            <p key={index}>
-              Total raised for the {fund.cycle} election cycle :{" "}
-              {formatCurrency(fund.receipts)}
-            </p>
+            <div key={index}>
+              <li>
+                Total raised for the {fund.cycle} election cycle :{" "}
+                {formatCurrency(fund.receipts)}
+              </li>
+            </div>
           ))}
+        <h2 className="py-4 text-center">
+          Total lifetime raised:{" "}
+          <span className="font-bold text-teal-500 underline underline-offset-4">
+            {formatCurrency(totalLifetimeRaised)}
+          </span>
+        </h2>
       </div>
     </div>
   );
