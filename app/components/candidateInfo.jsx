@@ -1,6 +1,7 @@
 // CandidateInfo.jsx
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import Chart from "chart.js/auto";
 import { partyName, stateFullName, formatCurrency } from "../utils/helpers";
 
 export default function CandidateInfo({ candidate, fundraising }) {
@@ -28,6 +29,28 @@ export default function CandidateInfo({ candidate, fundraising }) {
     (total, fund) => total + fund.receipts,
     0
   );
+
+  const chartRef = useRef(null);
+
+  useEffect(() => {
+    if (chartRef && chartRef.current) {
+      const chart = new Chart(chartRef.current, {
+        type: "line",
+        data: {
+          labels: fundraising.map((fund) => fund.cycle), // Election cycles
+          datasets: [
+            {
+              label: "Total Raised ($)",
+              data: fundraising.map((fund) => fund.receipts), // Money raised
+              fill: false,
+              borderColor: "rgb(75, 192, 192)",
+              tension: 0.1,
+            },
+          ],
+        },
+      });
+    }
+  }, [fundraising]);
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -62,6 +85,9 @@ export default function CandidateInfo({ candidate, fundraising }) {
             {formatCurrency(totalLifetimeRaised)}
           </span>
         </h2>
+      </div>
+      <div>
+        <canvas ref={chartRef} />
       </div>
     </div>
   );
