@@ -1,5 +1,3 @@
-// CandidateInfo.jsx
-
 import React, { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 import { partyName, stateFullName, formatCurrency } from "../utils/helpers";
@@ -34,6 +32,16 @@ export default function CandidateInfo({ candidate, fundraising }) {
 
   useEffect(() => {
     if (chartRef && chartRef.current) {
+      // sort the data in ascending order
+      fundraising.sort((a, b) => a.cycle - b.cycle);
+
+      // calculate cumulative funds
+      let cumulativeFunds = 0;
+      const cumulativeFundraising = fundraising.map((fund) => {
+        cumulativeFunds += fund.receipts;
+        return cumulativeFunds;
+      });
+
       const chart = new Chart(chartRef.current, {
         type: "line",
         data: {
@@ -41,12 +49,34 @@ export default function CandidateInfo({ candidate, fundraising }) {
           datasets: [
             {
               label: "Total Raised ($)",
-              data: fundraising.map((fund) => fund.receipts), // Money raised
+              data: cumulativeFundraising, // Cumulative money raised
               fill: false,
               borderColor: "rgb(75, 192, 192)",
-              tension: 0.1,
+              borderWidth: 7, // this line controls the thickness
+
+              tension: 0.2,
             },
           ],
+        },
+        options: {
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: "Election Cycle",
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: "Cumulative Amount",
+              },
+            },
+          },
+          animation: {
+            duration: 2000, // general animation time
+            // More animation options could go here
+          },
         },
       });
     }
@@ -63,7 +93,7 @@ export default function CandidateInfo({ candidate, fundraising }) {
             {finalName}{" "}
             {candidate.candidate_status === "C" ? "is running" : "ran"} as a
             member of the {partyName(candidate.party)} Party for{" "}
-            {stateFullName(candidate.address_state)}'s U.S.{" "}
+            {stateFullName(candidate.address_state)}&apos;s U.S.{" "}
             {candidate.office_full} District {candidate.district}.{" "}
             {lastNameCapitalized} ran in {yearsActive}.{" "}
           </p>
@@ -86,7 +116,7 @@ export default function CandidateInfo({ candidate, fundraising }) {
           </span>
         </h2>
       </div>
-      <div>
+      <div className="w-[800px] h-[600px]">
         <canvas ref={chartRef} />
       </div>
     </div>
