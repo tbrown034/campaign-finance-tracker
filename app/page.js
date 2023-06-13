@@ -64,7 +64,7 @@ export default function Home() {
   };
 
   return (
-    <main className="flex flex-col justify-center min-h-screen gap-8 px-6 sm:px-20 bg-gradient-to-t from-red-800 to-blue-800 text-cyan-100">
+    <main className="flex flex-col justify-center min-h-screen gap-8 px-6 py-4 sm:px-20 bg-gradient-to-t from-red-800 to-blue-800 text-cyan-100">
       <div className="text-center">
         <h1 className="text-4xl font-bold tracking-wider sm:text-6xl">
           PolitiChart

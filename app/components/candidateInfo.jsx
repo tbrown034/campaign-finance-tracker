@@ -83,7 +83,7 @@ export default function CandidateInfo({ candidate, fundraising }) {
   }, [fundraising]);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 px-4 sm:px-0">
+    <div className="flex flex-col items-center justify-center gap-4 px-4 py-20 sm:px-0">
       <div className="flex flex-col w-full gap-2">
         <h2 className="mt-4 text-2xl font-semibold text-center sm:text-left">
           {candidate.name.split(",").reverse().join(" ").trim()}
